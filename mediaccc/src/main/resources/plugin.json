@@ -1,0 +1,11 @@
+{
+  "pluginId": "org.pipepipe.plugin.mediaccc",
+  "name": "media.ccc.de",
+  "versionCode": 1,
+  "versionName": "1.0.0",
+  "apiVersion": "1.0",
+  "author": "PipePipe",
+  "entryClass": "org.pipepipe.plugin.mediaccc.MediaCCCPlugin",
+  "legacyServiceId": 2,
+  "description": "Chaos Computer Club conference recordings and live streams."
+}

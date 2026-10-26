@@ -1,0 +1,27 @@
+dependencies {
+    implementation 'com.github.InfinityLoop1308.PipePipeExtractor:extractor'
+    implementation "com.github.TeamNewPipe:nanojson:$nanojsonVersion"
+    implementation 'org.bouncycastle:bcprov-jdk18on:1.85'
+}
+
+def signingKey = providers.gradleProperty('pluginSigningKey')
+        .orElse(rootProject.layout.projectDirectory.file('signing.key').asFile.path)
+
+tasks.register('genKey', JavaExec) {
+    group = 'plugin'
+    description = 'Create a new Ed25519 signing key (see -PpluginSigningKey)'
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'org.pipepipe.plugin.tools.PluginTool'
+    args 'genkey', signingKey.get()
+}
+
+tasks.register('index', JavaExec) {
+    group = 'plugin'
+    description = 'Sign all packages in build/repo and write build/repo/index.json'
+    dependsOn rootProject.tasks.named('assembleRepo')
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'org.pipepipe.plugin.tools.PluginTool'
+    args 'index', signingKey.get(),
+            rootProject.layout.buildDirectory.dir('repo').get().asFile.path,
+            providers.gradleProperty('repoName').getOrElse('PipePipe Plugins')
+}

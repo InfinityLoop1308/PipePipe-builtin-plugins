@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches-ignore: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: PipePipePlugins
+      # Plugins compile against the extractor checked out next to them (see settings.gradle)
+      - uses: actions/checkout@v4
+        with:
+          repository: InfinityLoop1308/PipePipeExtractor
+          ref: main
+          path: PipePipeExtractor
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '25'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          build-root-directory: PipePipePlugins
+      - name: Install Android build tools
+        run: |
+          yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses > /dev/null || true
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "build-tools;37.0.0" "platforms;android-36"
+      # Pull requests run without secrets, so sign with a throwaway key.
+      # This only checks that packages build, dex and produce a valid index.
+      - name: Build and index with a throwaway key
+        working-directory: PipePipePlugins
+        run: |
+          ./gradlew :tools:genKey -PpluginSigningKey="$RUNNER_TEMP/ci.key"
+          ./gradlew :tools:index -PpluginSigningKey="$RUNNER_TEMP/ci.key"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: repo-unsigned-preview
+          path: PipePipePlugins/build/repo
+          retention-days: 7

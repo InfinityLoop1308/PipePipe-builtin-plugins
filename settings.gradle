@@ -1,0 +1,9 @@
+rootProject.name = 'PipePipePlugins'
+
+// Plugins compile against the extractor API. During development the sibling checkout is used;
+// a published extractor version can be used instead by removing this line and adding a
+// version to the extractor dependency.
+includeBuild('../PipePipeExtractor')
+
+include 'tools'
+include 'soundcloud', 'peertube', 'mediaccc', 'bandcamp'

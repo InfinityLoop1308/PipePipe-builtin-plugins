@@ -1,0 +1,11 @@
+{
+  "pluginId": "org.pipepipe.plugin.soundcloud",
+  "name": "SoundCloud",
+  "versionCode": 1,
+  "versionName": "1.0.0",
+  "apiVersion": "1.0",
+  "author": "PipePipe",
+  "entryClass": "org.pipepipe.plugin.soundcloud.SoundcloudPlugin",
+  "legacyServiceId": 1,
+  "description": "SoundCloud tracks, users, playlists and charts."
+}

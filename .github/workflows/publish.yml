@@ -1,0 +1,66 @@
+name: Publish
+
+# Runs after a change is merged. Rebuilds every plugin, signs with the repository secret
+# and uploads the packages together with index.json to the fixed release "repo".
+# Repository URL for the host:
+#   https://github.com/<owner>/<repo>/releases/download/repo/index.json
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publish
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: PipePipePlugins
+      - uses: actions/checkout@v4
+        with:
+          repository: InfinityLoop1308/PipePipeExtractor
+          ref: main
+          path: PipePipeExtractor
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '25'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          build-root-directory: PipePipePlugins
+      - name: Install Android build tools
+        run: |
+          yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses > /dev/null || true
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "build-tools;37.0.0" "platforms;android-36"
+      - name: Build, sign and index
+        working-directory: PipePipePlugins
+        env:
+          PLUGIN_SIGNING_KEY: ${{ secrets.PLUGIN_SIGNING_KEY }}
+        run: |
+          test -n "$PLUGIN_SIGNING_KEY" || { echo "Secret PLUGIN_SIGNING_KEY is not set"; exit 1; }
+          umask 077
+          printf '%s' "$PLUGIN_SIGNING_KEY" > "$RUNNER_TEMP/signing.key"
+          ./gradlew :tools:index -PpluginSigningKey="$RUNNER_TEMP/signing.key"
+          rm -f "$RUNNER_TEMP/signing.key"
+      - name: Upload to release
+        working-directory: PipePipePlugins/build/repo
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          if ! gh release view repo > /dev/null 2>&1; then
+            gh release create repo --target "$GITHUB_SHA" --title "Plugin repository" \
+              --notes "Plugin packages and index.json, updated automatically."
+          fi
+          # Packages first, index last, so the index never points at a missing package.
+          # Older versions stay available for hosts that still hold an older index.
+          gh release upload repo ./*.ppp --clobber
+          gh release upload repo index.json --clobber

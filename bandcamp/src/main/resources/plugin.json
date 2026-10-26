@@ -1,0 +1,11 @@
+{
+  "pluginId": "org.pipepipe.plugin.bandcamp",
+  "name": "Bandcamp",
+  "versionCode": 1,
+  "versionName": "1.0.0",
+  "apiVersion": "1.0",
+  "author": "PipePipe",
+  "entryClass": "org.pipepipe.plugin.bandcamp.BandcampPlugin",
+  "legacyServiceId": 4,
+  "description": "Bandcamp artists, albums, tracks and radio."
+}
