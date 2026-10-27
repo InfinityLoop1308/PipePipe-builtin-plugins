@@ -11,7 +11,7 @@ Plugins that ship with [PipePipe](https://github.com/InfinityLoop1308/PipePipe) 
 
 ## Maintainers wanted
 
-These services need people who use them and can keep them working when the site changes. Fixes and improvements are welcome as pull requests. If you want to take over a plugin, say so in PipePipe#3080.
+These services need people who use them and can keep them working when the site changes. Fixes and improvements are welcome as pull requests. If you want to take over a plugin, say so in https://github.com/InfinityLoop1308/PipePipe/discussions/3080.
 
 ## Writing a new plugin
 
