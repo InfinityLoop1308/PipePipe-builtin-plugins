@@ -3,7 +3,7 @@
   "name": "PeerTube",
   "versionCode": 1,
   "versionName": "1.0.0",
-  "apiVersion": "1.1",
+  "apiVersion": "1.0",
   "author": "PipePipe",
   "entryClass": "org.pipepipe.plugin.peertube.PeertubePlugin",
   "legacyServiceId": 3,
