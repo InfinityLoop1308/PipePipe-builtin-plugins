@@ -57,7 +57,7 @@ final class PeertubeInstances implements ServiceInstances {
     }
 
     private void load() {
-        final String selectedUrl = normalize(preferences.getString(INSTANCE_KEY, null));
+        final String selectedUrl = normalize(preferences.getString(INSTANCE_KEY));
         instances.clear();
         instances.addAll(readList());
 
@@ -82,7 +82,7 @@ final class PeertubeInstances implements ServiceInstances {
      * class, for example from the plugin settings screen.
      */
     void reloadSelected() {
-        final String url = normalize(preferences.getString(INSTANCE_KEY, null));
+        final String url = normalize(preferences.getString(INSTANCE_KEY));
         if (url == null) {
             return;
         }
@@ -95,7 +95,7 @@ final class PeertubeInstances implements ServiceInstances {
             }
             current = selected;
         }
-        if (!url.equals(preferences.getString(INSTANCE_KEY, null))) {
+        if (!url.equals(preferences.getString(INSTANCE_KEY))) {
             preferences.putString(INSTANCE_KEY, url);
         }
     }
@@ -206,7 +206,7 @@ final class PeertubeInstances implements ServiceInstances {
 
     @Nonnull
     private List<ServiceInstance> readList() {
-        final String saved = preferences.getString(LIST_KEY, null);
+        final String saved = preferences.getString(LIST_KEY);
         final List<ServiceInstance> result = new ArrayList<>();
         if (saved == null) {
             return result;
