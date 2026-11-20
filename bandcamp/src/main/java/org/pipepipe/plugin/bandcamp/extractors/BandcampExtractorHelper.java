@@ -11,7 +11,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 import org.schabi.newpipe.extractor.NewPipe;
 import org.schabi.newpipe.extractor.exceptions.ParsingException;
-import org.schabi.newpipe.extractor.exceptions.ReCaptchaException;
+import org.schabi.newpipe.extractor.exceptions.AntiBotException;
 import org.schabi.newpipe.extractor.localization.DateWrapper;
 
 import java.io.IOException;
@@ -46,7 +46,7 @@ public final class BandcampExtractorHelper {
             return JsonParser.object().from(jsonString)
                     .getString("bandcamp_url").replace("http://", "https://");
 
-        } catch (final JsonParserException | ReCaptchaException | IOException e) {
+        } catch (final JsonParserException | AntiBotException | IOException e) {
             throw new ParsingException("Ids could not be translated to URL", e);
         }
 
@@ -73,7 +73,7 @@ public final class BandcampExtractorHelper {
                                             .getBytes()
                             ).responseBody()
                     );
-        } catch (final IOException | ReCaptchaException | JsonParserException e) {
+        } catch (final IOException | AntiBotException | JsonParserException e) {
             throw new ParsingException("Could not download band details", e);
         }
     }
@@ -114,7 +114,7 @@ public final class BandcampExtractorHelper {
                     .text().equals("Bandcamp");
         } catch (final NullPointerException e) {
             return false;
-        } catch (final IOException | ReCaptchaException e) {
+        } catch (final IOException | AntiBotException e) {
             throw new ParsingException("Could not determine whether URL is custom domain "
                     + "(not available? network error?)");
         }

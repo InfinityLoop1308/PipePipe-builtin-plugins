@@ -13,7 +13,7 @@ import org.schabi.newpipe.extractor.ServiceInstances;
 import org.schabi.newpipe.extractor.downloader.Response;
 import org.schabi.newpipe.extractor.exceptions.ExtractionException;
 import org.schabi.newpipe.extractor.exceptions.ParsingException;
-import org.schabi.newpipe.extractor.exceptions.ReCaptchaException;
+import org.schabi.newpipe.extractor.exceptions.AntiBotException;
 import org.schabi.newpipe.extractor.plugin.PluginPreferences;
 import org.schabi.newpipe.extractor.utils.JsonUtils;
 import org.schabi.newpipe.extractor.utils.Utils;
@@ -246,7 +246,7 @@ final class PeertubeInstances implements ServiceInstances {
             }
             final JsonObject json = JsonParser.object().from(response.responseBody());
             return JsonUtils.getString(json, "instance.name");
-        } catch (final ReCaptchaException | IOException | JsonParserException
+        } catch (final AntiBotException | IOException | JsonParserException
                 | ParsingException e) {
             throw new ExtractionException("Could not validate instance " + url, e);
         }

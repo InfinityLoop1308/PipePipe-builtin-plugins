@@ -13,7 +13,7 @@ import org.schabi.newpipe.extractor.downloader.Downloader;
 import org.schabi.newpipe.extractor.downloader.Response;
 import org.schabi.newpipe.extractor.exceptions.ExtractionException;
 import org.schabi.newpipe.extractor.exceptions.ParsingException;
-import org.schabi.newpipe.extractor.exceptions.ReCaptchaException;
+import org.schabi.newpipe.extractor.exceptions.AntiBotException;
 import org.schabi.newpipe.extractor.linkhandler.ChannelTabs;
 import org.schabi.newpipe.extractor.linkhandler.ListLinkHandler;
 import org.schabi.newpipe.extractor.search.filter.Filter;
@@ -93,7 +93,7 @@ public class PeertubeAccountExtractor extends ChannelExtractor {
                 final JsonObject videoChannelJsonObject = (JsonObject) videoChannel;
                 subscribersCount += videoChannelJsonObject.getInt("followersCount");
             }
-        } catch (final IOException | JsonParserException | ReCaptchaException ignored) {
+        } catch (final IOException | JsonParserException | AntiBotException ignored) {
             // something went wrong during video channels extraction,
             // only return subscribers of ownerAccount
         }

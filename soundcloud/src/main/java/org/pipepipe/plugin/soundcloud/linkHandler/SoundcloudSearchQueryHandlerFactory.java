@@ -6,7 +6,7 @@ import org.pipepipe.plugin.soundcloud.search.filter.SoundcloudFilters;
 
 import org.schabi.newpipe.extractor.exceptions.ExtractionException;
 import org.schabi.newpipe.extractor.exceptions.ParsingException;
-import org.schabi.newpipe.extractor.exceptions.ReCaptchaException;
+import org.schabi.newpipe.extractor.exceptions.AntiBotException;
 import org.schabi.newpipe.extractor.linkhandler.SearchQueryHandlerFactory;
 import org.pipepipe.plugin.soundcloud.SoundcloudParsingHelper;
 
@@ -52,8 +52,8 @@ public class SoundcloudSearchQueryHandlerFactory extends SearchQueryHandlerFacto
 
         } catch (final UnsupportedEncodingException e) {
             throw new ParsingException("Could not encode query", e);
-        } catch (final ReCaptchaException e) {
-            throw new ParsingException("ReCaptcha required", e);
+        } catch (final AntiBotException e) {
+            throw new ParsingException("Blocked as automated traffic", e);
         } catch (final IOException | ExtractionException e) {
             throw new ParsingException("Could not get client id", e);
         }

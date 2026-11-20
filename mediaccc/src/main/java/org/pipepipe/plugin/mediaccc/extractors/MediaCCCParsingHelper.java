@@ -6,7 +6,7 @@ import com.grack.nanojson.JsonParserException;
 import org.schabi.newpipe.extractor.downloader.Downloader;
 import org.schabi.newpipe.extractor.exceptions.ExtractionException;
 import org.schabi.newpipe.extractor.exceptions.ParsingException;
-import org.schabi.newpipe.extractor.exceptions.ReCaptchaException;
+import org.schabi.newpipe.extractor.exceptions.AntiBotException;
 import org.schabi.newpipe.extractor.localization.Localization;
 
 import java.io.IOException;
@@ -61,7 +61,7 @@ public final class MediaCCCParsingHelper {
                 final String site = downloader.get("https://streaming.media.ccc.de/streams/v2.json",
                         localization).responseBody();
                 liveStreams = JsonParser.array().from(site);
-            } catch (final IOException | ReCaptchaException e) {
+            } catch (final IOException | AntiBotException e) {
                 throw new ExtractionException("Could not get live stream JSON.", e);
             } catch (final JsonParserException e) {
                 throw new ExtractionException("Could not parse JSON.", e);

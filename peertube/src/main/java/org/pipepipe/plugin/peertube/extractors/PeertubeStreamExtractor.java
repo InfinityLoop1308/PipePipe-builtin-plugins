@@ -17,7 +17,7 @@ import org.schabi.newpipe.extractor.downloader.Downloader;
 import org.schabi.newpipe.extractor.downloader.Response;
 import org.schabi.newpipe.extractor.exceptions.ExtractionException;
 import org.schabi.newpipe.extractor.exceptions.ParsingException;
-import org.schabi.newpipe.extractor.exceptions.ReCaptchaException;
+import org.schabi.newpipe.extractor.exceptions.AntiBotException;
 import org.schabi.newpipe.extractor.linkhandler.LinkHandler;
 import org.schabi.newpipe.extractor.localization.DateWrapper;
 import org.pipepipe.plugin.peertube.PeertubeParsingHelper;
@@ -123,7 +123,7 @@ public class PeertubeStreamExtractor extends StreamExtractor {
                         + getId() + "/description");
                 final JsonObject jsonObject = JsonParser.object().from(response.responseBody());
                 text = JsonUtils.getString(jsonObject, "description");
-            } catch (final IOException | ReCaptchaException | JsonParserException ignored) {
+            } catch (final IOException | AntiBotException | JsonParserException ignored) {
                 // Something went wrong when getting the full description, use the shortened one
             }
         }
@@ -367,7 +367,7 @@ public class PeertubeStreamExtractor extends StreamExtractor {
     }
 
     private void getStreamsFromApi(final StreamInfoItemsCollector collector, final String apiUrl)
-            throws IOException, ReCaptchaException, ParsingException {
+            throws IOException, AntiBotException, ParsingException {
         final Response response = getDownloader().get(apiUrl);
         JsonObject relatedVideosJson = null;
         if (response != null && !Utils.isBlank(response.responseBody())) {

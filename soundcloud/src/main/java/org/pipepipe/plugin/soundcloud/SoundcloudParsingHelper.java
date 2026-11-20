@@ -17,7 +17,7 @@ import org.schabi.newpipe.extractor.downloader.Downloader;
 import org.schabi.newpipe.extractor.downloader.Response;
 import org.schabi.newpipe.extractor.exceptions.ExtractionException;
 import org.schabi.newpipe.extractor.exceptions.ParsingException;
-import org.schabi.newpipe.extractor.exceptions.ReCaptchaException;
+import org.schabi.newpipe.extractor.exceptions.AntiBotException;
 import org.pipepipe.plugin.soundcloud.extractors.SoundcloudChannelInfoItemExtractor;
 import org.pipepipe.plugin.soundcloud.extractors.SoundcloudPlaylistInfoItemExtractor;
 import org.pipepipe.plugin.soundcloud.extractors.SoundcloudStreamInfoItemExtractor;
@@ -136,7 +136,7 @@ public final class SoundcloudParsingHelper {
      * @return the url resolved
      */
     public static String resolveUrlWithEmbedPlayer(final String apiUrl) throws IOException,
-            ReCaptchaException {
+            AntiBotException {
 
         final String response = NewPipe.getDownloader().get("https://w.soundcloud.com/player/?url="
                 + URLEncoder.encode(apiUrl, UTF_8), SoundCloud.getLocalization()).responseBody();
@@ -196,7 +196,7 @@ public final class SoundcloudParsingHelper {
     public static String getUsersFromApiMinItems(final int minItems,
                                                  final ChannelInfoItemsCollector collector,
                                                  final String apiUrl) throws IOException,
-            ReCaptchaException, ParsingException {
+            AntiBotException, ParsingException {
         String nextPageUrl = SoundcloudParsingHelper.getUsersFromApi(collector, apiUrl);
 
         while (!nextPageUrl.isEmpty() && collector.getItems().size() < minItems) {
@@ -214,7 +214,7 @@ public final class SoundcloudParsingHelper {
     @Nonnull
     public static String getUsersFromApi(final ChannelInfoItemsCollector collector,
                                          final String apiUrl) throws IOException,
-            ReCaptchaException, ParsingException {
+            AntiBotException, ParsingException {
         final String response = NewPipe.getDownloader().get(apiUrl, SoundCloud.getLocalization())
                 .responseBody();
         final JsonObject responseObject;
@@ -248,7 +248,7 @@ public final class SoundcloudParsingHelper {
     public static String getStreamsFromApiMinItems(final int minItems,
                                                    final StreamInfoItemsCollector collector,
                                                    final String apiUrl) throws IOException,
-            ReCaptchaException, ParsingException {
+            AntiBotException, ParsingException {
         String nextPageUrl = SoundcloudParsingHelper.getStreamsFromApi(collector, apiUrl);
 
         while (!nextPageUrl.isEmpty() && collector.getItems().size() < minItems) {
@@ -267,7 +267,7 @@ public final class SoundcloudParsingHelper {
     public static String getStreamsFromApi(final StreamInfoItemsCollector collector,
                                            final String apiUrl,
                                            final boolean charts) throws IOException,
-            ReCaptchaException, ParsingException {
+            AntiBotException, ParsingException {
         final Response response = NewPipe.getDownloader().get(apiUrl, SoundCloud
                 .getLocalization());
         if (response.responseCode() >= 400) {
@@ -308,13 +308,13 @@ public final class SoundcloudParsingHelper {
     }
 
     public static String getStreamsFromApi(final StreamInfoItemsCollector collector,
-                                           final String apiUrl) throws ReCaptchaException,
+                                           final String apiUrl) throws AntiBotException,
             ParsingException, IOException {
         return getStreamsFromApi(collector, apiUrl, false);
     }
 
     public static String getInfoItemsFromApi(final MultiInfoItemsCollector collector,
-                                             final String apiUrl) throws ReCaptchaException,
+                                             final String apiUrl) throws AntiBotException,
             ParsingException, IOException {
         final Response response = NewPipe.getDownloader().get(apiUrl, SoundCloud
                 .getLocalization());

@@ -13,7 +13,7 @@ import org.schabi.newpipe.extractor.downloader.Downloader;
 import org.schabi.newpipe.extractor.exceptions.ContentNotSupportedException;
 import org.schabi.newpipe.extractor.exceptions.ExtractionException;
 import org.schabi.newpipe.extractor.exceptions.ParsingException;
-import org.schabi.newpipe.extractor.exceptions.ReCaptchaException;
+import org.schabi.newpipe.extractor.exceptions.AntiBotException;
 import org.schabi.newpipe.extractor.linkhandler.LinkHandler;
 import org.schabi.newpipe.extractor.playlist.PlaylistInfoItemsCollector;
 import org.schabi.newpipe.extractor.stream.AudioStream;
@@ -47,7 +47,7 @@ public class BandcampRadioStreamExtractor extends BandcampStreamExtractor {
         try {
             return JsonParser.object().from(NewPipe.getDownloader()
                     .get(BASE_API_URL + "/bcweekly/1/get?id=" + id).responseBody());
-        } catch (final IOException | ReCaptchaException | JsonParserException e) {
+        } catch (final IOException | AntiBotException | JsonParserException e) {
             throw new ParsingException("could not get show data", e);
         }
     }

@@ -7,7 +7,7 @@ import com.grack.nanojson.JsonObject;
 import com.grack.nanojson.JsonParserException;
 import org.schabi.newpipe.extractor.NewPipe;
 import org.schabi.newpipe.extractor.exceptions.ParsingException;
-import org.schabi.newpipe.extractor.exceptions.ReCaptchaException;
+import org.schabi.newpipe.extractor.exceptions.AntiBotException;
 import org.schabi.newpipe.extractor.linkhandler.ListLinkHandlerFactory;
 import org.pipepipe.plugin.bandcamp.extractors.BandcampExtractorHelper;
 import org.schabi.newpipe.extractor.utils.JsonUtils;
@@ -39,7 +39,7 @@ public final class BandcampChannelLinkHandlerFactory extends ListLinkHandlerFact
 
             return String.valueOf(bandData.getLong("id"));
 
-        } catch (final IOException | ReCaptchaException | ArrayIndexOutOfBoundsException
+        } catch (final IOException | AntiBotException | ArrayIndexOutOfBoundsException
                        | JsonParserException e) {
             throw new ParsingException("Download failed", e);
         }
